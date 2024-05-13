@@ -36,7 +36,7 @@
             <importBase documentURI="script/causalConnBase.ncl" alias="conEx"/>
 
         </connectorBase>
-		<!--BORA-->
+
 	</head>
 
 	<body>
@@ -53,9 +53,10 @@
             <property name="fontWeight" value="bold"/>
         </media>  
 
- 
-            <port id="port1" component="img1"/> <!--imagem botão 1-->        
-            <port id="port2" component="img2"/> <!--imagem botão 2-->
+        <context id="cmenu">
+
+            <port id="port1" component="img1"/> <!--imagem botão 1 nao selecionado-->        
+            <port id="port2" component="img2"/> <!--imagem botão 2 nao selecionado-->
 		    <port id="port3" component="img3"/> <!--botão 3-->
             <port id="port4" component="img4"/> <!--botão 4-->
             <port id="port5" component="img5"/> <!--botão 5-->
@@ -65,172 +66,192 @@
             <media id="img3" src="media/buttons/teatroN.png" descriptor="desc3"/>
             <media id="img4" src="media/buttons/parqueN.png" descriptor="desc4"/>
             <media id="img5" src="media/buttons/cachoeiraN.png" descriptor="desc5"/>
-        <!--rgTV-->
 
-        <context id="cpraia">
+            <link id="selimage1" xconnector="conEx#onKeySelectionStopStart"> <!--Ao selecionar botão 1, acionar construtor do contexto cpraia-->
+          	    <bind role="onSelection" component="img1"/>
+                <bind role="stop" component="img1"/>
+                <bind role="stop" component="img2"/>
+                <bind role="stop" component="img3"/>
+                <bind role="stop" component="img4"/>
+                <bind role="stop" component="img5"/>
+                <bind role="start" component="cpraia"/>
+            </link>
 
-            <port id="port10" component="img10"/> <!--imagem praia-->        
-            <port id="port11" component="img11"/> <!--imagem botão 1 selecionado-->
-            <media id="img10" src="media/images/praia.jpg" descriptor="desc7"/> 
-            <media id="img11" src="media/buttons/praiaS.png" descriptor="desc1"/>
+            <link id="selimage2" xconnector="conEx#onKeySelectionStopStart"> <!--Ao selecionar botão 2, acionar construtor do contexto cmuseu-->
+          	    <bind role="onSelection" component="img2"/>
+                <bind role="stop" component="img1"/>
+                <bind role="stop" component="img2"/>
+                <bind role="stop" component="img3"/>
+                <bind role="stop" component="img4"/>
+                <bind role="stop" component="img5"/>
+                <bind role="start" component="cmuseu"/>
+            </link>
 
-     		    
-            <link xconnector="conEx#onKeySelectionStop">
-			<bind role="onSelection" component="img11">
-                <bindParam name="vKey" value="RED"/>
-            </bind>
-            <bind role="stop" component="cpraia"/>
-	    </link>
+            <link id="selimage3" xconnector="conEx#onKeySelectionStopStart">
+          	    <bind role="onSelection" component="img3"/>
+                <bind role="stop" component="img1"/>
+                <bind role="stop" component="img2"/>
+                <bind role="stop" component="img3"/>
+                <bind role="stop" component="img4"/>
+                <bind role="stop" component="img5"/>
+                <bind role="start" component="cteatro"/>
+            </link>
 
-        </context>
+            <link id="selimage4" xconnector="conEx#onKeySelectionStopStart">
+          	    <bind role="onSelection" component="img4"/>
+                <bind role="stop" component="img1"/>
+                <bind role="stop" component="img2"/>
+                <bind role="stop" component="img3"/>
+                <bind role="stop" component="img4"/>
+                <bind role="stop" component="img5"/>
+                <bind role="start" component="cparque"/>
+            </link>
 
-        <context id="cmuseu">
+            <link id="selimage5" xconnector="conEx#onKeySelectionStopStart">
+          	    <bind role="onSelection" component="img5"/>
+                <bind role="stop" component="img1"/>
+                <bind role="stop" component="img2"/>
+                <bind role="stop" component="img3"/>
+                <bind role="stop" component="img4"/>
+                <bind role="stop" component="img5"/>
+                <bind role="start" component="ccachoeira"/>
+            </link>
 
-            <port id="port20" component="img20"/> <!--imagem museu-->        
-            <port id="port21" component="img21"/> <!--imagem botão 2 selecionado-->
-            <media id="img20" src="media/images/museu.jpg" descriptor="desc7"/> 
-            <media id="img21" src="media/buttons/museuS.png" descriptor="desc2"/>
+            <context id="cpraia">
+
+                <port id="port10" component="img10"/> <!--imagem praia-->        
+                <port id="port11" component="img11"/> <!--imagem botão 1 selecionado-->
+                <media id="img10" src="media/images/praia.jpg" descriptor="desc7"/> <!--mostra a imagem praia-->
+                <media id="img11" src="media/buttons/praiaS.png" descriptor="desc1"/> <!--muda para botão 1 selecionado-->
+
+     		    <link xconnector="conEx#onKeySelectionStop"> <!--estrutura para voltar ao menu inicial-->
+			        <bind role="onSelection" component="img11">
+                        <bindParam name="vKey" value="RED"/>
+                    </bind>
+                    <bind role="stop" component="cpraia"/>
+	            </link>
+            </context>
+
+            <link xconnector="conEx#onEndStart">  <!--reativa os botoes do menu, quando cpraia é desativado-->
+			        <bind role="onEnd" component="cpraia"/>
+                    <bind role="start" component="img1"/>
+                    <bind role="start" component="img2"/>
+                    <bind role="start" component="img3"/>
+                    <bind role="start" component="img4"/>
+                    <bind role="start" component="img5"/>
+	        </link>
+
+            <context id="cmuseu">
+
+                    <port id="port20" component="img20"/> <!--imagem museu-->        
+                    <port id="port21" component="img21"/> <!--imagem botão 2 selecionado-->
+                    <media id="img20" src="media/images/museu.jpg" descriptor="desc7"/> 
+                    <media id="img21" src="media/buttons/museuS.png" descriptor="desc2"/>
             
-            <link xconnector="conEx#onKeySelectionStop">
-			    <bind role="onSelection" component="img21">
-                    <bindParam name="vKey" value="RED"/>
-                </bind>
-                <bind role="stop" component="cmuseu"/>
-	        </link>           
-            
+                    <link xconnector="conEx#onKeySelectionStop">
+			            <bind role="onSelection" component="img21">
+                            <bindParam name="vKey" value="RED"/>
+                        </bind>
+                        <bind role="stop" component="cmuseu"/>
+	                </link>           
+            </context>
+
+            <link xconnector="conEx#onEndStart">
+			        <bind role="onEnd" component="cmuseu"/>
+                    <bind role="start" component="img1"/>
+                    <bind role="start" component="img2"/>
+                    <bind role="start" component="img3"/>
+                    <bind role="start" component="img4"/>
+                    <bind role="start" component="img5"/>
+	        </link>
+
+            <context id="cteatro">
+                
+                    <port id="port30" component="img30"/> <!--imagem museu-->        
+                    <port id="port31" component="img31"/> <!--imagem botão 2 selecionado-->
+                    <media id="img30" src="media/images/teatro.jpg" descriptor="desc7"/> 
+                    <media id="img31" src="media/buttons/teatroS.png" descriptor="desc3"/>
+
+                    <link xconnector="conEx#onKeySelectionStop">
+			            <bind role="onSelection" component="img31">
+                            <bindParam name="vKey" value="RED"/>
+                        </bind>
+                        <bind role="stop" component="cteatro"/>
+	                </link>  
 		    
+            </context>
+
+           <link xconnector="conEx#onEndStart">
+			        <bind role="onEnd" component="cteatro"/>
+                    <bind role="start" component="img1"/>
+                    <bind role="start" component="img2"/>
+                    <bind role="start" component="img3"/>
+                    <bind role="start" component="img4"/>
+                    <bind role="start" component="img5"/>
+	        </link>
+
+            <context id="cparque">
+
+                <port id="port40" component="img40"/> <!--imagem museu-->        
+                <port id="port41" component="img41"/> <!--imagem botão 2 selecionado-->
+                <media id="img40" src="media/images/parque.jpg" descriptor="desc7"/> 
+                <media id="img41" src="media/buttons/parqueS.png" descriptor="desc4"/>
+
+                <link xconnector="conEx#onKeySelectionStop">
+			        <bind role="onSelection" component="img41">
+                        <bindParam name="vKey" value="RED"/>
+                    </bind>
+                    <bind role="stop" component="cparque"/>
+	            </link>  
+		    
+            </context>
+
+           <link xconnector="conEx#onEndStart">
+			        <bind role="onEnd" component="cparque"/>
+                    <bind role="start" component="img1"/>
+                    <bind role="start" component="img2"/>
+                    <bind role="start" component="img3"/>
+                    <bind role="start" component="img4"/>
+                    <bind role="start" component="img5"/>
+	        </link>
+
+            <context id="ccachoeira">
+
+                <port id="port50" component="img50"/> <!--imagem museu-->        
+                <port id="port51" component="img51"/> <!--imagem botão 2 selecionado-->
+                <media id="img50" src="media/images/cachoeira.jpg" descriptor="desc7"/> 
+                <media id="img51" src="media/buttons/cachoeiraS.png" descriptor="desc5"/>
+
+                <link xconnector="conEx#onKeySelectionStop">
+			        <bind role="onSelection" component="img51">
+                        <bindParam name="vKey" value="RED"/>
+                    </bind>
+                    <bind role="stop" component="ccachoeira"/>
+	            </link>  
+		    
+            </context>
+
+           <link xconnector="conEx#onEndStart">
+			        <bind role="onEnd" component="ccachoeira"/>
+                    <bind role="start" component="img1"/>
+                    <bind role="start" component="img2"/>
+                    <bind role="start" component="img3"/>
+                    <bind role="start" component="img4"/>
+                    <bind role="start" component="img5"/>
+	        </link>
+
         </context> 
-
-        <context id="cteatro">
-
-            <port id="port30" component="img30"/> <!--imagem museu-->        
-            <port id="port31" component="img31"/> <!--imagem botão 2 selecionado-->
-            <media id="img30" src="media/images/teatro.jpg" descriptor="desc7"/> 
-            <media id="img31" src="media/buttons/teatroS.png" descriptor="desc3"/>
-
-            <link xconnector="conEx#onKeySelectionStop">
-			    <bind role="onSelection" component="img31">
-                    <bindParam name="vKey" value="RED"/>
-                </bind>
-                <bind role="stop" component="cteatro"/>
-	        </link>  
-		    
-        </context>
-
-        <context id="cparque">
-
-            <port id="port40" component="img40"/> <!--imagem museu-->        
-            <port id="port41" component="img41"/> <!--imagem botão 2 selecionado-->
-            <media id="img40" src="media/images/parque.jpg" descriptor="desc7"/> 
-            <media id="img41" src="media/buttons/parqueS.png" descriptor="desc4"/>
-
-            <link xconnector="conEx#onKeySelectionStop">
-			    <bind role="onSelection" component="img41">
-                    <bindParam name="vKey" value="RED"/>
-                </bind>
-                <bind role="stop" component="cparque"/>
-	        </link>  
-		    
-        </context>
-
-        <context id="ccachoeira">
-
-            <port id="port50" component="img50"/> <!--imagem museu-->        
-            <port id="port51" component="img51"/> <!--imagem botão 2 selecionado-->
-            <media id="img50" src="media/images/cachoeira.jpg" descriptor="desc7"/> 
-            <media id="img51" src="media/buttons/cachoeiraS.png" descriptor="desc5"/>
-
-            <link xconnector="conEx#onKeySelectionStop">
-			    <bind role="onSelection" component="img51">
-                    <bindParam name="vKey" value="RED"/>
-                </bind>
-                <bind role="stop" component="ccachoeira"/>
-	        </link>  
-		    
-        </context>
-
-        <link id="selimage1" xconnector="conEx#onKeySelectionStopStart">
-          	<bind role="onSelection" component="img1"/>
-			<bind role="stop" component="cmuseu"/>
-            <bind role="stop" component="cteatro"/>
-            <bind role="stop" component="cparque"/>
-            <bind role="stop" component="img1"/>
-            <bind role="start" component="cpraia"/>
-            <bind role="stop" component="ccachoeira"/>
-            <bind role="start" component="img2"/>
-            <bind role="start" component="img3"/>
-            <bind role="start" component="img4"/>
-            <bind role="start" component="img5"/>
-
-
+      
+        <!--inicia o menu da aplicação-->
+        <link id="inicio" xconnector="conEx#onBeginStart">
+            <bind role="onBegin" component="img8"/>
+            <bind role="start" component="cmenu"/>             
         </link>
-
-        <link id="selimage2" xconnector="conEx#onKeySelectionStopStart">
-			<bind role="onSelection" component="img2"/>
-			<bind role="stop" component="cpraia"/>
-            <bind role="stop" component="cteatro"/>
-            <bind role="stop" component="cparque"/>
-            <bind role="stop" component="ccachoeira"/>
-            <bind role="stop" component="img2"/>
-            <bind role="start" component="cmuseu"/>
-            <bind role="start" component="img1"/>
-            <bind role="start" component="img3"/>
-            <bind role="start" component="img4"/>
-            <bind role="start" component="img5"/>
-
-        </link>
-
-        <link id="selimage3" xconnector="conEx#onKeySelectionStopStart">
-           	<bind role="onSelection" component="img3"/>
-			<bind role="stop" component="cpraia"/>
-            <bind role="stop" component="cmuseu"/>
-            <bind role="stop" component="cparque"/>
-            <bind role="stop" component="ccachoeira"/>
-            <bind role="stop" component="img3"/>
-            <bind role="start" component="cteatro"/>
-            <bind role="start" component="img1"/>
-            <bind role="start" component="img2"/>
-            <bind role="start" component="img4"/>
-            <bind role="start" component="img5"/>
-        </link>
-
-        <link id="selimage4" xconnector="conEx#onKeySelectionStopStart">
-            <bind role="onSelection" component="img4"/>
-			<bind role="stop" component="cpraia"/>
-            <bind role="stop" component="cmuseu"/>
-            <bind role="stop" component="cteatro"/>
-            <bind role="stop" component="ccachoeira"/>
-            <bind role="stop" component="img4"/>
-            <bind role="start" component="cparque"/>
-            <bind role="start" component="img1"/>
-            <bind role="start" component="img2"/>
-            <bind role="start" component="img3"/>
-            <bind role="start" component="img5"/>
-
-        </link>
-
-        <link id="selimage5" xconnector="conEx#onKeySelectionStopStart">
-           	<bind role="onSelection" component="img5"/>
-			<bind role="stop" component="cpraia"/>
-            <bind role="stop" component="cmuseu"/>
-            <bind role="stop" component="cteatro"/>
-            <bind role="stop" component="cparque"/>
-            <bind role="stop" component="img5"/>
-            <bind role="start" component="ccachoeira"/>
-            <bind role="start" component="img2"/>
-            <bind role="start" component="img3"/>
-            <bind role="start" component="img4"/>
-            <bind role="start" component="img1"/>
-
-        </link>
-
-        <!--voltar-->   
 
         <!--encerrar a aplicação-->
         <link id="selimage6" xconnector="conEx#onKeySelectionStop">
             <bind role="onSelection" component="img6"/>
             <bind role="stop" component="connector1"/>             
         </link>
-
 	</body>
 </ncl>
